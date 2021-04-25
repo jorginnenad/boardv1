@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'uuid/v4';
 import Form from './components/Form';
+import ItemInfo from './components/ItemInfo';
 import TodoList from './components/TodoList';
+import ToggleBox from './components/ToggleBox';
+
 
 const itemsFromBackend = [
   { id: uuid(), content: 'First task' },
@@ -15,11 +18,14 @@ const itemsFromBackend = [
 const onDragEnd = (result, columns, setColumns) => {
    if (!result.destination) return;
    const { source, destination } = result;
+   console.log(result);
    if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns[source.droppableId];
     const destColumn = columns[destination.droppableId];
+    console.log(sourceColumn, destColumn);
     const sourceItems = [...sourceColumn.items];
     const destItems = [...destColumn.items];
+    console.log(sourceItems, destItems);
     const [removed] = sourceItems.splice(source.index, 1);
     destItems.splice(destination.index, 0, removed);
     setColumns({
@@ -36,6 +42,7 @@ const onDragEnd = (result, columns, setColumns) => {
    } else {
     const column = columns[source.droppableId];
     const copiedItems = [...column.items];
+    console.log(copiedItems);
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
     setColumns({
@@ -46,12 +53,9 @@ const onDragEnd = (result, columns, setColumns) => {
       }
     })
    }
-}
+};
 
-
-function App() {
-
-  const columnsFromBackend = 
+const columnsFromBackend = 
   {
     "todo": {
       id: uuid(),
@@ -67,10 +71,16 @@ function App() {
       items: []
       }  
   };
+
+function App() {
+
+  
   
   const [columns, setColumns] = useState(columnsFromBackend);
   const [inputText, setInputText] = useState("");
   const [todos, setTodos] = useState([]);
+
+  
   
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
@@ -78,7 +88,10 @@ function App() {
       <header>
         <h1>Todo List</h1>
       </header>
-      <Form inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
+      <ToggleBox title="Show Vehicles">
+				<ItemInfo />
+			</ToggleBox>
+      <Form column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
       <TodoList setTodos={setTodos} todos={todos} />
       </div>
       <div style={{ display: 'flex' }}>
@@ -101,7 +114,8 @@ function App() {
                       minHeight: 500
                     }}
                   >
-                    {todos.map((todo, index) => {
+                    {/* todos.filter(todo=>todo.column===column.id).map((todo, index)) */}
+                    {todos.filter(todo => todo.column === column.id).map((todo, index) => {
                       return (
                         <Draggable key={todo.id} draggableId={todo.id} index={index} >
                             {(provided, snapshot) => {

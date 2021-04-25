@@ -1,7 +1,7 @@
 import React from "react";
 import uuid from 'uuid/v4';
 
-const Form = ({ setInputText, todos, setTodos, inputText }) => {
+const Form = ({ setInputText, todos, setTodos, inputText, column }) => {
     const inputTextHandler = (e) => {
         console.log(e.target.value);
         setInputText(e.target.value);
@@ -9,7 +9,7 @@ const Form = ({ setInputText, todos, setTodos, inputText }) => {
 const submitTodoHandler = (e) => {
     e.preventDefault();
     setTodos([
-        ...todos, {text: inputText, id: uuid(), completed: false}
+        ...todos, {text: inputText, id: uuid(), completed: false, column: column.todo.id}
     ]);
     setInputText("");
 };
