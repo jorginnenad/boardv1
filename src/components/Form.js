@@ -1,19 +1,21 @@
 import React from "react";
 import uuid from 'uuid/v4';
 
-const Form = ({ setInputText, todos, setTodos, inputText, column }) => {
-    const inputTextHandler = (e) => {
-        console.log(e.target.value);
-        setInputText(e.target.value);
-    };
-const submitTodoHandler = (e) => {
+const Form = ({ setInputText, todos, setTodos, inputText, column, setColumns }) => {
+
+  const inputTextHandler = (e) => {
+
+    setInputText(e.target.value);
+  };
+  const submitTodoHandler = (e) => {
     e.preventDefault();
-    setTodos([
-        ...todos, {text: inputText, id: uuid(), completed: false, column: column.todo.id}
-    ]);
     setInputText("");
-};
-    return(
+    const x = { ...column }
+    x.todo.items.push(inputText)
+    setColumns(x)
+
+  };
+  return (
     <form>
       <input value={inputText} onChange={inputTextHandler} type="text" className="todo-input" />
       <button onClick={submitTodoHandler} className="todo-button" type="submit">
@@ -27,7 +29,7 @@ const submitTodoHandler = (e) => {
         </select>
       </div> */}
     </form>
-    );
+  );
 }
 
 export default Form;
