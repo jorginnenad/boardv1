@@ -23,7 +23,7 @@ form {
 form input,
 form button {
   padding: 0.5rem;
-  font-size: 2rem;
+  font-size: 1rem;
   border: none;
   background: white;
 }
@@ -145,4 +145,16 @@ select {
     background-color: red;
     height: 200px;
     width: 200px;
+}
+
+/* Modal  */
+
+.modal-form {
+  flex-direction: column;
+}
+.todo-button {
+  margin-top: 10px;
+}
+.separator {
+  margin-top: 10px;
 }

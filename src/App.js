@@ -1,20 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'uuid/v4';
 import Form from './components/Form';
-import ItemInfo from './components/ItemInfo';
-import TodoList from './components/TodoList';
-import ToggleBox from './components/ToggleBox';
-
-import TodoModal from './components/TodoModal'
-
-// import TodoModal from './components/TodoModal'
-const itemsFromBackend = [
-  { id: uuid(), content: 'First task' },
-  { id: uuid(), content: 'Second task' }
-];
-
-
+import TodoModal from './components/TodoModal';
 
 
 const onDragEnd = (result, columns, setColumns) => {
@@ -33,7 +21,6 @@ const onDragEnd = (result, columns, setColumns) => {
     const [removed] = sourceItems.splice(source.index, 1);
 
     destItems.splice(destination.index, 0, removed);
-    console.log(222222222222, columns)
     setColumns({
       ...columns,
       [source.droppableId]: {
@@ -50,7 +37,6 @@ const onDragEnd = (result, columns, setColumns) => {
     const copiedItems = [...column.items];
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
-    console.log(33333333, columns)
     setColumns({
       ...columns,
       [source.droppableId]: {
@@ -63,6 +49,39 @@ const onDragEnd = (result, columns, setColumns) => {
 
 
 function App() {
+
+  const statusCheck = 
+  [
+    {
+      id: uuid(),
+      name: 'To do'
+    },
+    {
+      id: uuid(),
+      name: 'In progress'
+    },
+    {
+      id: uuid(),
+      name: 'Done'
+    },
+  ];
+
+  const usersFromBackend = 
+  [
+    {
+      name: 'Dragan',
+      id: uuid()
+    },
+    {
+      name: 'Dejan',
+      id: uuid()
+    },
+    {
+      name: 'Dusan',
+      id: uuid()
+    },
+  ];
+  
 
 
   const columnsFromBackend =
@@ -84,9 +103,12 @@ function App() {
 
 
   const [columns, setColumns] = useState(columnsFromBackend);
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState([]);
   const [todos, setTodos] = useState([]);
   const [renderModal, setRenderModal] = useState(false)
+  const [users, setUser] = useState(usersFromBackend);
+  const [status, setStatus] = useState(statusCheck);
+
 
 
   return (
@@ -94,14 +116,11 @@ function App() {
       <div>
 
         <button onClick={() => setRenderModal(renderModal => !renderModal)}>
-          {renderModal ? 'close Modal' : 'open modal'}
+          {renderModal ? 'Close' : 'Add task'}
         </button>
-        {/* {renderModal && <TodoModal setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />} */}
-        <Form setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
-        {/* <ToggleBox title="Show Vehicles">
-          <ItemInfo />
-        </ToggleBox> */}
-        {/* <TodoList setTodos={setTodos} todos={todos} /> */}
+        {/* {renderModal && <TodoModal status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />} */}
+        <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
+
       </div>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
@@ -128,7 +147,7 @@ function App() {
                         >
                           {column.items.map((todo, index) => {
                             return (
-                              <Draggable key={index} draggableId={todo} index={index} >
+                              <Draggable key={index} draggableId={id} index={index} >
                                 {(provided, snapshot) => {
                                   return (
                                     <div
@@ -144,10 +163,9 @@ function App() {
                                         color: 'white',
                                         ...provided.draggableProps.style
                                       }}
-                                    >
-                                      {todo}
-                                      {/* {<TodoList setTodos={setTodos} todos={todos} />} */}
-
+                                    > 
+                                    {todo.title}
+                                      {console.log(todo)}
                                     </div>
                                   )
                                 }}
