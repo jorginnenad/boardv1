@@ -1,7 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import uuid from 'uuid/v4';
 
 const Form = ({ status, setStatus, setUser, user, setInputText, inputText, column, setColumns }) => {
+
+  const [state, setstate] = useState(0)
+  let stateX = 0;
+  console.log(state)
+  console.log(stateX)
 
   const inputTextHandler = (e) => {
     const { name, value } = e.target;
@@ -12,6 +17,7 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
     });
     // setInputText(e.target.value);
   };
+
   const submitTodoHandler = (e) => {
     e.preventDefault();
     setInputText("");
@@ -39,6 +45,7 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
                                 </div>
                             </div>
                         </div>
+
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
@@ -47,7 +54,7 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
                                     <option value="none" disabled="">Unassgined</option>
                                     {user.map((user, index) => {
                                       return (
-                                        <option key={index} value={user.name} disabled="">{user.name}</option>
+                                        <option key={index} value={user.id} disabled="">{user.name}</option>
                                         )
                                     }
                                     )}
@@ -62,7 +69,7 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
                                         <option value="0" disabled="">Unassgined</option>
                                         {status.map((status, index) => {
                                           return (
-                                          <option key={index} value={status.name} disabled="">{status.name}</option>
+                                          <option key={index} value={status.id} disabled="">{status.name}</option>
                                           )
                                         }
                                       )}

@@ -114,17 +114,16 @@ function App() {
   return (
     <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
       <div>
-
         <button onClick={() => setRenderModal(renderModal => !renderModal)}>
           {renderModal ? 'Close' : 'Add task'}
         </button>
         {/* {renderModal && <TodoModal status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />} */}
         <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
-
       </div>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([id, column]) => {
+            console.log('col',column)
             return (
               <div
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -147,7 +146,7 @@ function App() {
                         >
                           {column.items.map((todo, index) => {
                             return (
-                              <Draggable key={index} draggableId={id} index={index} >
+                              <Draggable key={index} draggableId={todo.title} index={index} >
                                 {(provided, snapshot) => {
                                   return (
                                     <div
