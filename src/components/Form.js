@@ -1,12 +1,9 @@
 import React, {useState} from "react";
 import uuid from 'uuid/v4';
 
-const Form = ({ status, setStatus, setUser, user, setInputText, inputText, column, setColumns }) => {
+const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, setInputText, inputText, column, setColumns }) => {
 
   const [state, setstate] = useState(0)
-  let stateX = 0;
-  console.log(state)
-  console.log(stateX)
 
   const inputTextHandler = (e) => {
     const { name, value } = e.target;
@@ -18,11 +15,26 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
     // setInputText(e.target.value);
   };
 
+  const selectHandler = (e) => {
+    const { name, value } = e.target;
+
+      setSelectField({
+        ...selectField,
+        [name]: value
+      });
+  };
+
   const submitTodoHandler = (e) => {
     e.preventDefault();
     setInputText("");
+    setSelectField("");
     const x = { ...column }
-    x.todo.items.push(inputText)
+    x.todo.items.push({
+      title: inputText.title,
+      desc: inputText.desc,
+      user: selectField.user,
+      status: selectField.status
+    })
     setColumns(x)
 
   };
@@ -32,6 +44,9 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
                     
     <div className="col-md-6">
     <div className="card">
+      <button
+      onClick={() => setstate(1)}
+      ></button>
         <div className="card-content collapse show">
             <div className="card-body">
                 <form className="form">
@@ -50,7 +65,7 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label htmlFor="users">Users</label>
-                                    <select id="users" name="user" value={user.id} onChange={inputTextHandler} className="form-control">
+                                    <select id="users" name="user" value={selectField.user || ''} onChange={selectHandler} className="form-control">
                                     <option value="none" disabled="">Unassgined</option>
                                     {user.map((user, index) => {
                                       return (
@@ -65,7 +80,7 @@ const Form = ({ status, setStatus, setUser, user, setInputText, inputText, colum
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label htmlFor="status">Status</label>
-                                    <select id="status" name="status" value={status.id} onChange={inputTextHandler} className="form-control">
+                                    <select id="status" name="status" value={selectField.status || ''} onChange={selectHandler} className="form-control">
                                         <option value="0" disabled="">Unassgined</option>
                                         {status.map((status, index) => {
                                           return (

@@ -104,10 +104,12 @@ function App() {
 
   const [columns, setColumns] = useState(columnsFromBackend);
   const [inputText, setInputText] = useState([]);
+  const [selectField, setSelectField] = useState([]);
   const [todos, setTodos] = useState([]);
   const [renderModal, setRenderModal] = useState(false)
   const [users, setUser] = useState(usersFromBackend);
   const [status, setStatus] = useState(statusCheck);
+  
 
 
 
@@ -118,7 +120,7 @@ function App() {
           {renderModal ? 'Close' : 'Add task'}
         </button>
         {/* {renderModal && <TodoModal status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />} */}
-        <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
+        <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
       </div>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
