@@ -12,7 +12,6 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
       ...inputText,
       [name]: value
     });
-    // setInputText(e.target.value);
   };
 
   const selectHandler = (e) => {
@@ -28,6 +27,7 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
     e.preventDefault();
     setInputText("");
     setSelectField("");
+    
     const x = { ...column }
     x.todo.items.push({
       title: inputText.title,
@@ -36,7 +36,6 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
       status: selectField.status
     })
     setColumns(x)
-
   };
 
   return (
@@ -84,7 +83,7 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
                                         <option value="0" disabled="">Unassgined</option>
                                         {status.map((status, index) => {
                                           return (
-                                          <option key={index} value={status.id} disabled="">{status.name}</option>
+                                          <option key={index} name={status.name} value={status.id} disabled="">{status.name}</option>
                                           )
                                         }
                                       )}

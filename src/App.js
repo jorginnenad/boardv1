@@ -119,8 +119,8 @@ function App() {
         <button onClick={() => setRenderModal(renderModal => !renderModal)}>
           {renderModal ? 'Close' : 'Add task'}
         </button>
-        {/* {renderModal && <TodoModal status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />} */}
-        <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />
+        {renderModal && <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />}
+        {/* <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} /> */}
       </div>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
