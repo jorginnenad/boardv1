@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'uuid/v4';
 import Form from './components/Form';
-import TodoModal from './components/TodoModal';
+import Todo from './components/Todo';
+
 
 
 const onDragEnd = (result, columns, setColumns) => {
   const { source, destination } = result;
 
-  if (!destination) return;
+  if (!destination) return; 
 
   if (source.droppableId !== destination.droppableId) {
 
@@ -50,39 +51,21 @@ const onDragEnd = (result, columns, setColumns) => {
 
 function App() {
 
-  const statusCheck = 
+  const priorityCheck = 
   [
     {
       id: uuid(),
-      name: 'To do'
+      name: 'Low'
     },
     {
       id: uuid(),
-      name: 'In progress'
+      name: 'Medium'
     },
     {
       id: uuid(),
-      name: 'Done'
+      name: 'High'
     },
   ];
-
-  const usersFromBackend = 
-  [
-    {
-      name: 'Dragan',
-      id: uuid()
-    },
-    {
-      name: 'Dejan',
-      id: uuid()
-    },
-    {
-      name: 'Dusan',
-      id: uuid()
-    },
-  ];
-  
-
 
   const columnsFromBackend =
   {
@@ -106,26 +89,32 @@ function App() {
   const [inputText, setInputText] = useState([]);
   const [selectField, setSelectField] = useState([]);
   const [todos, setTodos] = useState([]);
-  const [renderModal, setRenderModal] = useState(false)
-  const [users, setUser] = useState(usersFromBackend);
-  const [status, setStatus] = useState(statusCheck);
+  const [renderModal, setRenderModal] = useState(false);
+  const [renderItem, setRenderItem] = useState(false);
+  const [prioritys, setPriority] = useState(priorityCheck);
+  const [currentTodo, setCurrentTodo] = useState();
   
-
+  const getCurrentItem = (title) => {
+   const selectedItem = columns.todo.items.map(item => {
+    if (title === item.title) {
+        setCurrentTodo(item);
+        setRenderItem(true);
+    } 
+   })
+  }
 
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-      <div>
+    <div className="wrapper" style={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+      <div className="add-button">
         <button onClick={() => setRenderModal(renderModal => !renderModal)}>
           {renderModal ? 'Close' : 'Add task'}
         </button>
-        {renderModal && <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />}
-        {/* <Form status={status} setStatus={setStatus} user={users} setUser={setUser} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} /> */}
+        {renderModal && <Form priority={prioritys} setPriority={setPriority} setColumns={setColumns} column={columns} setSelectField={setSelectField} selectField={selectField} inputText={inputText} todos={todos} setTodos={setTodos} setInputText={setInputText} />}
       </div>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([id, column]) => {
-            console.log('col',column)
             return (
               <div
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
@@ -152,6 +141,11 @@ function App() {
                                 {(provided, snapshot) => {
                                   return (
                                     <div
+                                      onClick={ function(e) {
+                                        // setRenderItem(renderItem => !renderItem)
+                                        console.log(e.target.innerHTML)
+                                        getCurrentItem(e.target.innerHTML)
+                                      } }
                                       ref={provided.innerRef}
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
@@ -184,7 +178,7 @@ function App() {
           })}
         </DragDropContext>
       </div>
-
+      <div className="infoDiv">{renderItem && <Todo setRenderItem={setRenderItem} todoData={currentTodo} />}</div>
     </div>
   );
 }

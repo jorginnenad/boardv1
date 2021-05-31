@@ -26,6 +26,7 @@ form button {
   font-size: 1rem;
   border: none;
   background: white;
+  margin: 1pt;
 }
 form button {
   color: #ff6f47;
@@ -95,6 +96,10 @@ form button:hover {
   text-decoration: line-through;
   opacity: 0.5;
 }
+.infoDiv {
+    width: 500px;
+    height: 250px;
+}
 
 /*CUSTOM SELECTOR */
 select {
@@ -119,6 +124,7 @@ select {
   font-family: "Poppins", sans-serif;
   cursor: pointer;
   width: 12rem;
+  background-color: white;
 }
 /* Arrow */
 .select::after {
@@ -157,4 +163,17 @@ select {
 }
 .separator {
   margin-top: 10px;
+}
+.wrapper {
+  height: auto;
+    min-height: 100%;
+    margin: 0px auto;
+    padding: 0px auto;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 870px) {
+  .wrapper {
+    flex-flow: column;
+  }
 }

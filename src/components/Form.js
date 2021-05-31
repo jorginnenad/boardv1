@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import uuid from 'uuid/v4';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, setInputText, inputText, column, setColumns }) => {
+const Form = ({ priority, selectField, setSelectField, setInputText, inputText, column, setColumns }) => {
 
-  const [state, setstate] = useState(0)
+
 
   const inputTextHandler = (e) => {
     const { name, value } = e.target;
@@ -31,21 +32,20 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
     const x = { ...column }
     x.todo.items.push({
       title: inputText.title,
-      desc: inputText.desc,
-      user: selectField.user,
-      status: selectField.status
+      date: startDate,
+      priority: selectField.priority,
+      desc: inputText.desc
     })
     setColumns(x)
   };
+
+  const [startDate, setStartDate] = useState(new Date());
 
   return (
 
                     
     <div className="col-md-6">
     <div className="card">
-      <button
-      onClick={() => setstate(1)}
-      ></button>
         <div className="card-content collapse show">
             <div className="card-body">
                 <form className="form">
@@ -55,7 +55,7 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
                             <div className="col-md-6">
                                 <div className="form-group">
                                     <label htmlFor="title">Title</label>
-                                    <input id="title" name="title" value={inputText.title || ''} onChange={inputTextHandler} type="title" className="todo-input" />
+                                    <input maxLength="100" id="title" name="title" value={inputText.title || ''} onChange={inputTextHandler} type="title" className="todo-input" />
                                 </div>
                             </div>
                         </div>
@@ -63,27 +63,19 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label htmlFor="users">Users</label>
-                                    <select id="users" name="user" value={selectField.user || ''} onChange={selectHandler} className="form-control">
-                                    <option value="none" disabled="">Unassgined</option>
-                                    {user.map((user, index) => {
-                                      return (
-                                        <option key={index} value={user.id} disabled="">{user.name}</option>
-                                        )
-                                    }
-                                    )}
-                                    </select>
+                                    <label htmlFor="users">Date</label>
+                                    <DatePicker selected={startDate} onChange={date => setStartDate(date)} minDate={startDate} />
                                 </div>
                             </div>
 
                             <div className="col-md-6">
                                 <div className="form-group">
-                                    <label htmlFor="status">Status</label>
-                                    <select id="status" name="status" value={selectField.status || ''} onChange={selectHandler} className="form-control">
+                                    <label htmlFor="prioritys">Priority</label>
+                                    <select id="prioritys" name="priority" value={selectField.priority || ''} onChange={selectHandler} className="form-control">
                                         <option value="0" disabled="">Unassgined</option>
-                                        {status.map((status, index) => {
+                                        {priority.map((priority, index) => {
                                           return (
-                                          <option key={index} name={status.name} value={status.id} disabled="">{status.name}</option>
+                                          <option key={index} name={priority.name} value={priority.name} disabled="">{priority.name}</option>
                                           )
                                         }
                                       )}
@@ -93,7 +85,7 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
                         </div>
                         <div className="form-group">
                             <label htmlFor="desc">Description</label>
-                            <input id="desc" name="desc" type="desc" value={inputText.desc || ''} onChange={inputTextHandler} />
+                            <input id="desc" name="desc" type="desc" maxLength="1000" value={inputText.desc || ''} onChange={inputTextHandler} />
                         </div>
                         <button onClick={submitTodoHandler} className="todo-button" type="submit">
                         <i className="fas fa-plus-square"></i>
@@ -105,35 +97,6 @@ const Form = ({ status, setStatus, setUser, user, selectField, setSelectField, s
     </div>
 </div>
     
-    // <form className="modal-form">
-    //   <div>
-    //   <span>Title:</span>
-    //   <input value={inputText} onChange={inputTextHandler} type="text" className="todo-input" />
-    //   </div>
-    //   <div>
-    //   <span>Description:</span>
-    //   <textarea />
-    //   </div>
-    //   <div>
-    //   <form className="select-form">
-    //     <label>User:</label>
-    //   <select>
-    //     <option value="nenad">Nenad</option>
-    //     <option value="dragan">Dragan</option>
-    //     <option value="dejan">Dejan</option>
-    //   </select>
-    //   <label>Status:</label>
-    //   <select>
-    //     <option value="todo">To Do</option>
-    //     <option value="in-progress">In progress</option>
-    //     <option value="done">Done</option>
-    //   </select>
-    //   </form>
-    //   </div>
-    //   <button onClick={submitTodoHandler} className="todo-button" type="submit">
-    //     <i className="fas fa-plus-square"></i>
-    //   </button>
-    // </form>
   );
 }
 
